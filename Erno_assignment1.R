@@ -57,9 +57,13 @@ model2 <- keras_model_sequential() %>%
   layer_conv_2d(filters = 64, kernel_size = c(3, 3), 
                 activation = 'relu') %>%
   layer_max_pooling_2d(pool_size = c(2, 2)) %>%
+  #.25 dropout layer:
+  layer_dropout(rate = 0.25) %>%
   layer_flatten() %>%
   layer_dense(units = 128, activation = 'relu') %>%
-  layer_dense(units = 10, activation = 'softmax')
+  #.5 dropout layer
+  layer_dropout(rate = 0.5) %>%
+  layer_dense(units = 10, activation = 'softmax') 
 
 model2 %>% compile(
   loss = 'categorical_crossentropy',
