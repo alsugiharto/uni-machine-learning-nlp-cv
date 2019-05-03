@@ -16,9 +16,19 @@ x_test1 <- x_test1 / 255
 y_train <- to_categorical(mnist$train$y)
 y_test <- to_categorical(mnist$test$y)
 
-#Building, compiling, fitting, evaluation
+#Building WITHOUT RELU
 model1 <- keras_model_sequential() %>%
   layer_dense(units = 256, input_shape = c(784)) %>%
+  layer_dense(units = 10, activation = 'softmax')
+model1 %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy') 
+)
+
+#Building, compiling, fitting, evaluation WITH RELU
+model1 <- keras_model_sequential() %>%
+  layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>%
   layer_dense(units = 10, activation = 'softmax')
 model1 %>% compile(
   loss = 'categorical_crossentropy',
