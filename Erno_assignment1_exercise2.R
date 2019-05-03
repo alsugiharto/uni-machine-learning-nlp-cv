@@ -33,7 +33,7 @@ model <- keras_model_sequential() %>%
 #Compilation
 model %>% compile(
   loss = 'categorical_crossentropy',
-  optimizer = optimizer_rmsprop(lr = 0.0001, decay = 1e-6),
+  optimizer = optimizer_adadelta(lr = 0.0001, decay = 1e-6),
   metrics = c('accuracy')
 )
 

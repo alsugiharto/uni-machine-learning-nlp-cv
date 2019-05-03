@@ -72,7 +72,7 @@ model2 %>% compile(
 )
 
 history2 <- model2 %>% fit(
-  x_train, y_train,
+  x_train2, y_train,
   batch_size = 128,
   epochs = 6,
   verbose = 1,
@@ -80,7 +80,7 @@ history2 <- model2 %>% fit(
 )
 
 score2 <- model2 %>% evaluate(
-  x_test, y_test,
+  x_test2, y_test,
   verbose = 0
 )
 
