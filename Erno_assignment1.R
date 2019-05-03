@@ -62,12 +62,12 @@ model2 <- keras_model_sequential() %>%
   layer_flatten() %>%
   layer_dense(units = 128, activation = 'relu') %>%
   #.5 dropout layer
-  layer_dropout(rate = 0.5) %>%
+  #layer_dropout(rate = 0.5) %>%
   layer_dense(units = 10, activation = 'softmax') 
 
 model2 %>% compile(
   loss = 'categorical_crossentropy',
-  optimizer = optimizer_rmsprop(),
+  optimizer = optimizer_adadelta(),
   metrics = c('accuracy')
 )
 
@@ -78,7 +78,7 @@ history2 <- model2 %>% fit(
   verbose = 1,
   validation_split = 0.2
 )
-
+ 
 score2 <- model2 %>% evaluate(
   x_test2, y_test,
   verbose = 0
