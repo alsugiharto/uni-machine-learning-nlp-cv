@@ -1,3 +1,5 @@
+#Code without whitespace between the lines should ALWAYS be run as one! 
+
 library(keras)
 
 #LOADING DATASET
@@ -8,9 +10,8 @@ mnist <- dataset_mnist()
 #Reshaping data for perceptron
 x_train1 <- array_reshape(mnist$train$x, c(nrow(mnist$train$x), 784))
 x_test1 <- array_reshape(mnist$test$x, c(nrow(mnist$test$x), 784))
-#Rescaling
-x_train1 <- x_train1 / 255
-x_test1 <- x_test1 / 255
+x_train1_div <- x_train1 / 255
+x_test1_div <- x_test1 / 255
 
 #Categorising labelings
 y_train <- to_categorical(mnist$train$y)
@@ -37,7 +38,7 @@ model1 %>% compile(
 )
 
 history1 <- model1 %>% fit(
-  x_train1, y_train,
+  x_train1_div, y_train,
   batch_size = 128,
   epochs = 12,
   verbose = 1,
@@ -45,7 +46,7 @@ history1 <- model1 %>% fit(
 )
 
 score1 <- model1 %>% evaluate(
-  x_test1, y_test,
+  x_test1_div, y_test,
   verbose=0
 )
 
@@ -56,11 +57,10 @@ score1 <- model1 %>% evaluate(
 #Reshaping data for convolutional layers
 x_train2 <- array_reshape(mnist$train$x, c(nrow(mnist$train$x), 28, 28, 1))
 x_test2 <- array_reshape(mnist$test$x, c(nrow(mnist$test$x), 28, 28, 1))
-#Rescaling
-x_train2 <- x_train2 / 255
-x_test2 <- x_test2 / 255
+x_train2_div <- x_train2 / 255
+x_test2_dv <- x_test2 / 255
 
-#Buildling, compiling, fitting, evaluating
+#Buildling, compiling, fitting, evaluating: Dropout layers commented out when necessary (before question 15)
 model2 <- keras_model_sequential() %>% 
   layer_conv_2d(filters = 32, kernel_size = c(3, 3),
                 activation = 'relu', input_shape = c(28, 28, 1)) %>%
@@ -72,7 +72,7 @@ model2 <- keras_model_sequential() %>%
   layer_flatten() %>%
   layer_dense(units = 128, activation = 'relu') %>%
   #.5 dropout layer
-  #layer_dropout(rate = 0.5) %>%
+  layer_dropout(rate = 0.5) %>%
   layer_dense(units = 10, activation = 'softmax') 
 
 model2 %>% compile(
@@ -82,7 +82,7 @@ model2 %>% compile(
 )
 
 history2 <- model2 %>% fit(
-  x_train2, y_train,
+  x_train2_div, y_train,
   batch_size = 128,
   epochs = 6,
   verbose = 1,
@@ -90,7 +90,7 @@ history2 <- model2 %>% fit(
 )
  
 score2 <- model2 %>% evaluate(
-  x_test2, y_test,
+  x_test2_div, y_test,
   verbose = 0
 )
 
