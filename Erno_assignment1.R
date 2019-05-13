@@ -60,7 +60,18 @@ x_test2 <- array_reshape(mnist$test$x, c(nrow(mnist$test$x), 28, 28, 1))
 x_train2_div <- x_train2 / 255
 x_test2_dv <- x_test2 / 255
 
-#Buildling, compiling, fitting, evaluating: Dropout layers commented out when necessary (before question 15)
+#Convolutional model WITHOUT dropout
+model2 <- keras_model_sequential() %>% 
+  layer_conv_2d(filters = 32, kernel_size = c(3, 3),
+                activation = 'relu', input_shape = c(28, 28, 1)) %>%
+  layer_conv_2d(filters = 64, kernel_size = c(3, 3), 
+                activation = 'relu') %>%
+  layer_max_pooling_2d(pool_size = c(2, 2)) %>%
+  layer_flatten() %>%
+  layer_dense(units = 128, activation = 'relu') %>%
+  layer_dense(units = 10, activation = 'softmax') 
+
+#Convolutional model WITH dropout
 model2 <- keras_model_sequential() %>% 
   layer_conv_2d(filters = 32, kernel_size = c(3, 3),
                 activation = 'relu', input_shape = c(28, 28, 1)) %>%
@@ -75,12 +86,14 @@ model2 <- keras_model_sequential() %>%
   layer_dropout(rate = 0.5) %>%
   layer_dense(units = 10, activation = 'softmax') 
 
+#Compilation
 model2 %>% compile(
   loss = 'categorical_crossentropy',
   optimizer = optimizer_adadelta(),
   metrics = c('accuracy')
 )
 
+#Fitting
 history2 <- model2 %>% fit(
   x_train2_div, y_train,
   batch_size = 128,
@@ -88,7 +101,8 @@ history2 <- model2 %>% fit(
   verbose = 1,
   validation_split = 0.2
 )
- 
+
+#Evaluation 
 score2 <- model2 %>% evaluate(
   x_test2_div, y_test,
   verbose = 0
